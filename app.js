@@ -4,14 +4,14 @@ const session = require("express-session"); //セッションする用
 const bcrypt = require('bcrypt'); //パスワード暗号化用
 const app = express();
 
-app.use(express.static('public'));
+app.use(express.static('css'));
 app.use(express.urlencoded({extended: false}));
 
 const connection = mysql.createConnection({
   host: 'localhost',
-  user: 'progate',
-  password: 'password',
-  database: 'blog'
+  user: '',
+  password: '',
+  database: ''
 });
 
 app.use(
@@ -41,7 +41,7 @@ app.get('/', (req, res) => {
 app.get('/content/:id', (req, res) => {
   const id = req.params.id;
   connection.query(
-    'SELECT * FROM articles WHERE id = ?',
+    'SELECT * FROM clothes WHERE id = ?',
     [id],
     (error, results) => {
       res.render('content.ejs', { cloth: results[0] });
@@ -49,14 +49,24 @@ app.get('/content/:id', (req, res) => {
   );
 });
 
+// アバウト画面に対応するルーティングです
+app.get('/about', (req, res) => {
+  res.render('about.ejs');
+});
+
 //ログイン画面に対応するルーティングです
 app.get('/login', (req, res) => {
     connection.query(
       'SELECT * FROM customers',
       (error, results) => {
-        res.render('list.ejs', { customers: results });
+        res.render('login.ejs', { customers: results });
       }
     );
+});
+
+// パスワード忘れた画面に対応するルーティングです
+app.get('/password', (req, res) => {
+  res.render('password.ejs');
 });
 
 //新規登録画面に対応するルーティングです
@@ -71,7 +81,7 @@ app.get("/cart", (req, res) => {
     'INSERT INTO customers (purchased_count) VALUES (?)',
     [purchased_count],
     (error, results) => {
-      res.render('list.ejs', { customers: results });
+      res.render('cart.ejs', { customers: results });
     }
   );
 }); 
@@ -80,5 +90,10 @@ app.get("/cart", (req, res) => {
 app.get("/purchased", (req, res) => {
   res.render("purchased.ejs");
 }); 
+
+// 問い合わせ画面に対応するルーティングです
+app.get('/contact', (req, res) => {
+  res.render('contact.ejs');
+});
 
 app.listen(3000);
