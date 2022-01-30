@@ -46,10 +46,6 @@ header a, footer a{
     background-color: black;
 }
 
-.cart-btn span{
-    
-}
-
 .header-contents{
     line-height: 92px;
 }
@@ -88,10 +84,6 @@ footer{
     text-align: center;
 }
 
-footer li{
-
-}
-
 .item-list{
     width: 100%;
     margin: 0 auto;
@@ -105,10 +97,6 @@ footer li{
 
 .item-list p{
     text-align: center;
-}
-
-.item-list img{
-
 }
 
 .item1, .item2, .item4, .item5, .item7, .item8{
@@ -210,13 +198,13 @@ footer li{
 }
 
 .text-container h2{
-    font-size: ;
-    font-family: ;
+    font-size: 35px;
+    font-family: Century;
 }
 
 .text-container h1{
-    font-size: ;
-    font-family: ;
+    font-size: 40px;
+    font-family: fantasy;
 }
 
 .size-list li{
@@ -268,6 +256,7 @@ footer li{
 
 .login-password{
     padding-top: 20px;
+    margin-bottom: 15px;
 }
 
 .btn-wrapper{
@@ -291,11 +280,11 @@ footer li{
 }
 
 .facebook-btn{
-    width: ;
-    height: ;
-    color: ;
-    border-color: ;
-    background-color: ;
+    width: 330px;
+    height: 40px;
+    color: gray;
+    border-color: gray;
+    background-color: white;
     border-radius: 7px;
 }
 
