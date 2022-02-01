@@ -4,16 +4,20 @@ const session = require("express-session"); //セッションする用
 const bcrypt = require('bcrypt'); //パスワード暗号化用
 const app = express();
 
-app.use(express.static('css'));
+app.use(express.static('public'));
 app.use(express.urlencoded({extended: false}));
 
 const connection = mysql.createConnection({
   host: 'localhost',
-  user: '',
-  password: '',
-  database: ''
+  user: 'root',
+  password: 'k2yanagi',
+  database: 'Koasuky'
 });
 
+app.set('views', './views');
+app.set('view engine', 'ejs');
+
+/*
 app.use(
     session({
       secret: 'my_secret_key',
@@ -21,8 +25,10 @@ app.use(
       saveUninitialized: false,
     })
 );
+*/
 
 //ログインの状態を毎回確認します
+/*
 app.use((req, res, next) => {
     if (req.session.userId === undefined) {
             console.log('ログインしていません');
@@ -31,13 +37,21 @@ app.use((req, res, next) => {
         }
     next();
 });
+*/
 
 // トップ画面に対応するルーティングです
 app.get('/', (req, res) => {
-  res.render('index.ejs');
+  connection.query(
+    'SELECT id, category FROM clothes',
+    (error, results) => {
+      console.log(results);
+      res.render('index');
+    }
+  );
 });
 
 // 内容画面に対応するルーティングです
+/*
 app.get('/content/:id', (req, res) => {
   const id = req.params.id;
   connection.query(
@@ -48,8 +62,10 @@ app.get('/content/:id', (req, res) => {
     }
   );
 });
+*/
 
 // アバウト画面に対応するルーティングです
+/*
 app.get('/about', (req, res) => {
   res.render('about.ejs');
 });
@@ -63,20 +79,25 @@ app.get('/login', (req, res) => {
       }
     );
 });
+*/
 
 // パスワード忘れた画面に対応するルーティングです
+/*
 app.get('/password', (req, res) => {
   res.render('password.ejs');
 });
+*/
 
 //新規登録画面に対応するルーティングです
+/*
 app.get("/signup", (req, res) => {
   
 });  
+*/
 
 //カート画面に対応するルーティングです
+/*
 app.get("/cart", (req, res) => {
-  const purchased_count = ;
   connection.query(
     'INSERT INTO customers (purchased_count) VALUES (?)',
     [purchased_count],
@@ -85,15 +106,20 @@ app.get("/cart", (req, res) => {
     }
   );
 }); 
+*/
 
 //購入完了画面に対応するルーティングです
+/*
 app.get("/purchased", (req, res) => {
   res.render("purchased.ejs");
 }); 
+*/
 
 // 問い合わせ画面に対応するルーティングです
+/*
 app.get('/contact', (req, res) => {
   res.render('contact.ejs');
 });
+*/
 
 app.listen(3000);
