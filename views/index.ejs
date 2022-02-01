@@ -37,21 +37,12 @@
                 <h1>RANKING</h1>
                 <ul class="ranking-list">
                     <li>
-                    <a href="content.html"><img src="image/T-sirt①.png" width="200px"></a> 
-                    <p>Tシャツ</p>
-                    <p>￥3000</p>
+                        <% ranks.forEach(rank) => {%>
+                            <a href="/content/:<%= item.id %> "><img src="image/<%=item.id%>.png" width="200px"></a> 
+                            <p><%=item.name%></p>
+                            <p>￥<%=item.price%></p>
+                        <% }); %>
                     </li>
-                    <li>
-                        <a href="content.html"><img src="image/cap①.png" width="200px"></a> 
-                        <p>キャップ</p>
-                        <p>￥2500</p>
-                    </li>
-                    <li>
-                        <a href="content.html"><img src="image/Sweat①.png" width="200px"></a> 
-                        <p>スウェット</p>
-                        <p>￥5000</p>
-                    </li>
-                    
                 </ul>
     
             </div>
@@ -60,49 +51,11 @@
                 <h1>ITEM</h1>
                 <ul class="item-list">
                     <li class="item1">
-                        <a href="content.html"><img src="image/T-sirt①.png" width="300px" height="300px"></a>
-                        <p>Tシャツ</p>
-                        <p>￥3000</p>
-                    </li>
-                    <li class="item2">
-                        <a href="content.html"><img src="image/T-sirt②.png" width="300px" height="300px"></a>
-                        <p>Tシャツ</p>
-                        <p>￥3000</p>
-                    </li>
-                    <li class="item3">
-                        <a href="content.html"><img src="image/LongT-sirt①.png" width="300px" height="300px"></a>
-                        <p>ロングTシャツ</p>
-                        <p>￥4500</p>
-                    </li>
-                    <li class="item4">
-                        <a href="content.html"><img src="image/LongT-sirt②.png" width="300px" height="300px"></a>
-                        <p>ロングTシャツ</p>
-                        <p>￥4500</p>
-                    </li>
-                    <li class="item5">
-                        <a href="content.html"><img src="image/LongT-sirt③.png" width="300px" height="300px"></a>
-                        <p>ロングTシャツ</p>
-                        <p>￥4500</p>
-                    </li>
-                    <li class="item6">
-                        <a href="content.html"><img src="image/cap①.png" width="300px" height="300px"></a>
-                        <p>キャップ</p>
-                        <p>￥2500</p>
-                    </li>
-                    <li class="item7">
-                        <a href="content.html"><img src="image/cap②.png" width="300px" height="300px"></a>
-                        <p>キャップ</p>
-                        <p>￥2500</p>
-                    </li>
-                    <li class="item8">
-                        <a href="content.html"><img src="image/Sweat①.png" width="300px" height="300px"></a>
-                        <p>スウェット</p>
-                        <p>￥5000</p>
-                    </li>
-                    <li class="item9">
-                        <a href="content.html"><img src="image/Sweat②.png" width="300px" height="300px"></a>
-                        <p>スウェット</p>
-                        <p>￥5000</p>
+                        <% items.forEach(item) => {%>
+                            <a href="/content/:<%= item.id %> "><img src="image/<%=item.id%>.png" width="200px"></a> 
+                            <p><%=item.name%></p>
+                            <p>￥<%=item.price%></p>
+                        <% }); %>
                     </li>
                 </ul>
             </div>
