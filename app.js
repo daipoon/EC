@@ -42,14 +42,14 @@ app.use((req, res, next) => {
 // トップ画面に対応するルーティングです
 app.get('/', (req, res) => {
   connection.query(
-    'SELECT id, name, price, category, purchased_count, released_at FROM clothes', //発売日が最近のものからsize以外の情報を取得
+    'SELECT id, name, price, category, purchased_count, released_at FROM clothes ORDER BY released_at DESC', //発売日が最近のものからsize以外の情報を取得
     (error, results) => {
       console.log(results);
       res.render('index', {items: results}); //items配列に商品情報がすべて格納（idの低い順）
     }
   );
   connection.query(
-    "SELECT id, name, price, category, purchased_count, released_at FROM clothes ", //purchased_countの多いものから3つの情報を取得
+    "SELECT id, name, price, category, purchased_count, released_at FROM clothes ORDER BY purchased_count DESC LIMIT 3;", //purchased_countの多いものから3つの情報を取得
     (error, results) => {
       console.log(results);
       res.render("index", {ranks: results}) //ranks配列にpurchased_countの多いものから3つの情報を格納（purchased_countの大きい順）
@@ -76,7 +76,6 @@ app.get('/content/:id', (req, res) => {
 app.get('/about', (req, res) => {
   res.render('about.ejs');
 });
-
 //ログイン画面に対応するルーティングです
 app.get('/login', (req, res) => {
     connection.query(
