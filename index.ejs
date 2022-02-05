@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Kōasuky</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/stylesheet.css">
+        <link rel="stylesheet" href="css/responsive.css">
+    </head>
+    <body>
+        <header>
+            <div class="header-contents">
+                <div class="header-left">
+                    <div class="logo-btn">
+                        <a href="/"><img src="image/logo.png" class="logo"></a>
+                    </div>
+                    <ul>
+                        <li><a href="index.html">HOME</a></li>
+                        <li><a href="about.html">ABOUT</a></li>
+                        <li><a href="https://www.instagram.com/daiki_yng/"><span class="fa fa-instagram"></span></a></li> 
+                    </ul>
+                </div>
+                <div class="header-right">
+                    <ul>
+                        <li><a href="cart.html" class="cart-btn"><span class="fa fa-shopping-cart"></span></a></li>
+                        <li><a href="login.html" class="btn login-btn">ログイン</a></li>
+                        <li><a href="signup.html" class="btn signup-btn">新規登録</a></li>
+                        <li><span class="fa fa-search">検索<input class="search-text" type="text"></span></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <div class="top-wrapper">
+            <div class="ranking-item">
+                <h1>RANKING</h1>
+                <ul class="ranking-list">
+                    <% ranks.forEach((rank) => { %>
+                        <li>
+                            <a href="/content/:<%= rank.id %> "><img src="image/<%= rank.id %>.png" width="200px"></a> 
+                            <p><%= rank.name %></p>
+                            <p>￥<%= rank.price %></p>
+                        </li>
+                    <% }); %>
+                </ul>
+    
+            </div>
+    
+            <div class="main-item">
+                <h1>ITEM</h1>
+                <ul class="item-list">
+                    <% items.forEach((item) => { %>
+                        <li class="item1">
+                            <a href="/content/:<%= item.id %> "><img src="image/<%= item.id %>.png" width="200px"></a> 
+                            <p><%= item.name %></p>
+                            <p>￥<%= item.price %></p>
+                        </li>
+                    <% }); %>
+                </ul>
+            </div>
+        </div>
+
+        <footer>
+            <ul>
+                <li><a href="https://www.instagram.com/daiki_yng/"><span class="fa fa-instagram"></span></a></li>
+                <li><a href="#" class="btn tweet-btn"><span class="fa fa-twitter"></span>ツイート</a> </li> <!-- twitterにツイートする -->
+            </ul>
+            <h2 class="footer-text">🄫 2021 koasuky.</h2>
+        </footer>
+
+    </body>
+</html>
