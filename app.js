@@ -30,7 +30,7 @@ app.use(
 //ログインの状態を毎回確認します
 /*
 app.use((req, res, next) => {
-    if (req.session.userId === undefined) {
+    if (req.session.userId === undefined)
             console.log('ログインしていません');
         } else {
             console.log('ログインしています');
@@ -42,12 +42,19 @@ app.use((req, res, next) => {
 // トップ画面に対応するルーティングです
 app.get('/', (req, res) => {
   connection.query(
-    'SELECT id, name, price, category, purchased_count FROM clothes', //発売日が最近のものからid,name,price,category,purchased_countを取得
+    'SELECT id, name, price, category, purchased_count, released_at FROM clothes', //発売日が最近のものからsize以外の情報を取得
     (error, results) => {
       console.log(results);
-      res.render('index');
+      res.render('index', {items: results}); //items配列に商品情報がすべて格納（idの低い順）
     }
   );
+  connection.query(
+    "SELECT id, name, price, category, purchased_count, released_at FROM clothes ", //purchased_countの多いものから3つの情報を取得
+    (error, results) => {
+      console.log(results);
+      res.render("index", {ranks: results}) //ranks配列にpurchased_countの多いものから3つの情報を格納（purchased_countの大きい順）
+    }
+  )
 });
 
 // 内容画面に対応するルーティングです
