@@ -14,9 +14,6 @@ const connection = mysql.createConnection({
   database: 'Koasuky'
 });
 
-app.set('views', './views');
-app.set('view engine', 'ejs');
-
 /*
 app.use(
     session({
@@ -42,20 +39,20 @@ app.use((req, res, next) => {
 // トップ画面に対応するルーティングです
 app.get('/', (req, res) => {
   connection.query(
-    'SELECT id, name, price, category, purchased_count, released_at FROM clothes ORDER BY released_at DESC;', //発売日が最近のものからsize以外の情報を取得
-    (error, results) => {
-      console.log(results);
-      res.render('index', {items: results}); //items配列に商品情報がすべて格納（idの低い順）
-    }
-  );
-  connection.query(
-    "SELECT id, name, price, category, purchased_count, released_at FROM clothes ORDER BY purchased_count DESC LIMIT 3;", //purchased_countの多いものから3つの情報を取得
-    (error, results) => {
-      console.log(results);
-      res.render("index", {ranks: results}) //ranks配列にpurchased_countの多いものから3つの情報を格納（purchased_countの大きい順）
-    }
-  )
+    'SELECT id, name, price, category, purchased_count, released_at FROM clothes ORDER BY released_at DESC', //発売日が最近のものからsize以外の情報を取得
+    (error_i, results_i) => {
+      console.log(results_i);
+      //res.render('index.ejs', {items: results}); //items配列に商品情報がすべて格納（idの低い順)
+  
+    connection.query(
+      "SELECT id, name, price, category, purchased_count, released_at FROM clothes ORDER BY id DESC LIMIT 3", //purchased_countの多いものから3つの情報を取得
+      (error_r, results_r) => {
+        console.log(results_r);
+        res.render("index.ejs", {items: results_i, ranks: results_r}); //ranks配列にpurchased_countの多いものから3つの情報を格納（purchased_countの大きい順）
+      });
+  });
 });
+
 
 // 内容画面に対応するルーティングです
 /*
@@ -76,6 +73,7 @@ app.get('/content/:id', (req, res) => {
 app.get('/about', (req, res) => {
   res.render('about.ejs');
 });
+
 //ログイン画面に対応するルーティングです
 app.get('/login', (req, res) => {
     connection.query(
