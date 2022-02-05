@@ -42,7 +42,7 @@ app.use((req, res, next) => {
 // トップ画面に対応するルーティングです
 app.get('/', (req, res) => {
   connection.query(
-    'SELECT id, name, price, category, purchased_count, released_at FROM clothes ORDER BY released_at DESC', //発売日が最近のものからsize以外の情報を取得
+    'SELECT id, name, price, category, purchased_count, released_at FROM clothes ORDER BY released_at DESC;', //発売日が最近のものからsize以外の情報を取得
     (error, results) => {
       console.log(results);
       res.render('index', {items: results}); //items配列に商品情報がすべて格納（idの低い順）
