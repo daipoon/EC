@@ -16,7 +16,9 @@
                 <ul class="ranking-list">
                     <% ranks.forEach((rank) => { %>
                         <li>
-                            <a href="/content/:<%= rank.id %> "><img src="image/<%= rank.id %>.png" width="200px"></a> 
+                            <form action="/content/<%= rank.id %>">
+                                <a href="/content/<%= rank.id %> "><img src="image/<%= rank.id %>.png" width="200px"></a> 
+                            </form>
                             <p><%= rank.name %></p>
                             <p>￥<%= rank.price %></p>
                         </li>
@@ -30,7 +32,9 @@
                 <ul class="item-list">
                     <% items.forEach((item) => { %>
                         <li class="item1">
-                            <a href="/content/:<%= item.id %> "><img src="image/<%= item.id %>.png" width="200px"></a> 
+                            <form action="/content/<%= item.id %>">
+                                <a href="/content/<%= item.id %> "><img src="image/<%= item.id %>.png" width="200px"></a> 
+                            </form>
                             <p><%= item.name %></p>
                             <p>￥<%= item.price %></p>
                         </li>

@@ -9,39 +9,41 @@
         <link rel="stylesheet" href="../css/responsive.css">
     </head>
     <body>
-        <%- include("header"); %>
+        <%- include("header_content"); %>
 
         <div class="wrapper">
             <div class="main-logo">
-                <a href="index.html">
-                    <img src="../../image/logo.png" height="150">
+                <a href="/">
+                    <img src="../image/logo.png" height="150">
                 </a>
             </div>
             
             <ul class="menu-list">
-                <li class="menulist-li"><a href="index.html">HOME</a></li>
-                <li class="menulist-li"><a href="about.html">ABOUT</a></li>
+                <li class="menulist-li"><a href="/">HOME</a></li>
+                <li class="menulist-li"><a href="/about">ABOUT</a></li>
                 <li class="menulist-insta"><a href="https://www.instagram.com/daiki_yng/"><span class="fa fa-instagram"></span></a></li> 
             </ul>
 
             <div class="main-container">
                 <div class="img-container">
-                    <a href="#" class="main-img"><img src="../../image/T-sirt①.png" width="460px" height="460px"></a>
+                    <a href="#" class="main-img"><img src="../image/<%= item.id %>.png" width="460px" height="460px"></a>
                     <ul class="subimg-list">
-                        <li><a href="#"><img src="../../image/T-sirt①.png" width="68px" height="68px"></a></li>
-                        <li><a href="#"><img src="../../image/T-sirt①.png" width="68px" height="68px"></a></li>
-                        <li><a href="#"><img src="../../image/T-sirt①.png" width="68px" height="68px"></a></li>
+                        <li><a href="#"><img src="../image/<%= item.id %>.png" width="68px" height="68px"></a></li>
+                        <li><a href="#"><img src="../image/<%= item.id %>.png" width="68px" height="68px"></a></li>
+                        <li><a href="#"><img src="../image/<%= item.id %>.png" width="68px" height="68px"></a></li>
                     </ul>
                 </div>
     
                 <div class="text-container">
-                    <h2>Tシャツ</h2>
-                    <h1>￥3000</h1>
-                    <ul class="size-list">
-                        <li class="sizelist-s"><p>S</p><button type="button" class="btn size-btn" onclick=""><span class="fa fa-shopping-cart"></span>カートに入れる</button> </li>
-                        <li class="sizelist" sizelist><p>M</p><button type="button" class="btn size-btn" onclick=""><span class="fa fa-shopping-cart"></span>カートに入れる</button></li>
-                        <li class="sizelist"><p>L</p><button type="button" class="btn size-btn" onclick=""><span class="fa fa-shopping-cart"></span>カートに入れる</button></li>
-                    </ul>
+                    <h2><%= item.name %></h2>
+                    <h1>￥<%= item.price %></h1>
+                    <form action="/add" method="post">
+                        <ul class="size-list">
+                            <li class="sizelist-s"><p>S</p><button type="submit" class="btn size-btn"><span class="fa fa-shopping-cart"></span>カートに入れる</button> </li>
+                            <li class="sizelist"><p>M</p><button type="submit" class="btn size-btn"><span class="fa fa-shopping-cart"></span>カートに入れる</button></li>
+                            <li class="sizelist"><p>L</p><button type="submit" class="btn size-btn"><span class="fa fa-shopping-cart"></span>カートに入れる</button></li>
+                        </ul>
+                    </form>
                     <p></p>
                 </div>
             </div>
