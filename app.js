@@ -83,31 +83,20 @@ app.get('/about', (req, res) => {
   res.render('about.ejs');
 });
 
-/*
 //ログイン画面に対応するルーティングです
 app.get('/login', (req, res) => {
-    connection.query(
-      'SELECT * FROM customers',
-      (error, results) => {
-        res.render('login.ejs', { customers: results });
-      }
-    );
+  res.render('login.ejs');
 });
-*/
 
 // パスワード忘れた画面に対応するルーティングです
-/*
 app.get('/password', (req, res) => {
   res.render('password.ejs');
 });
-*/
 
 //新規登録画面に対応するルーティングです
-/*
 app.get("/signup", (req, res) => {
-  
+  res.render("signup.ejs")
 });  
-*/
 
 //カート画面に対応するルーティングです
 app.get("/cart", (req, res) => {
@@ -123,7 +112,7 @@ app.get("/cart", (req, res) => {
 
 app.post("/purchase", (req, res) => {
   const userId = req.session.userId;
-  const purchase_counts[] = req.body.purchase_count; //今回お客が買う商品のそれぞれの個数(配列にする)
+  const purchase_counts = req.body.purchase_count; //今回お客が買う商品のそれぞれの個数(配列にする)
   var counter = 0; //何回繰り返しているか数える用
   purchase_counts.forEach((count) => {
     counter++;
