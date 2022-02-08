@@ -132,7 +132,7 @@ app.post("/purchase", (req, res) => {
       // 上のSQLでは、データベースclothesのpurchased_countの値をお客が買った分だけ増やす（未完成）
       [count, userId],
       (error_p, results_p) => {
-        if(counter == purchase_counts.length-1){ //最後の繰り返しなら、cartの中身を空（NULL）にしてHOMEに戻る
+        if(counter == purchase_counts.length){ //最後の繰り返しなら、cartの中身を空（NULL）にしてHOMEに戻る
         connection.query(
           "UPDATE customers SET cart = NULL WHERE id = ?"
           [userId],
