@@ -7,7 +7,12 @@
             <ul>
                 <li><a href="/">HOME</a></li>
                 <li><a href="/about">ABOUT</a></li>
-                <li><a href="https://www.instagram.com/daiki_yng/"><span class="fa fa-instagram"></span></a></li> 
+                <li><a href="https://www.instagram.com/daiki_yng/"><span class="fa fa-instagram"></span></a></li>
+                <% if(locals.username !== undefined) { %>
+                <p class = "login-name">ログイン中 : <%= locals.username %></p>
+                <% } else { %>
+                <p class = "login-name">ゲストとしてログイン中</p>
+                <% } %>
             </ul>
         </div>
         <div class="header-right">
