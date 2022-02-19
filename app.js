@@ -4,9 +4,36 @@ const session = require("express-session"); //セッションする用
 const bcrypt = require('bcrypt'); //パスワード暗号化用
 const res = require('express/lib/response');
 const app = express();
+const nodemailer = require('nodemailer');
 
 app.use(express.static('public'));
 app.use(express.urlencoded({extended: false}));
+
+const options = {
+  host: 'smtp.gmail.com', // メールサーバー
+  port: 465, // ポート番号 25 など
+  secure: true, // 465 番ポートを使う場合。それ以外は false
+  requireTLS: false,
+  tls: {
+    rejectUnauthorized: false,
+  },
+  auth: { // 認証情報
+    user: 'daichan.server123@gmail.com', // ユーザー名
+    pass: 'Daichanserver', // パスワード
+  },
+};
+
+function send(text1,number) {
+  const email = {
+    from: 'daichan.server123@gmail.com', // 送信元メールアドレス
+    to: text1, // 送信先メールアドレス
+    subject: 'Email Test Mail',
+    text: 'パスコード: ' + number,
+    html: 'パスコード: ' + number,
+    }
+  const transport = nodemailer.createTransport(options);
+  const result = transport.sendMail(email);
+};
 
 const connection = mysql.createConnection({
   host: 'localhost',
@@ -31,6 +58,16 @@ app.use((req, res, next) => {
   }
   next();
 });
+
+app.use((req, res, next) => {
+  if (req.session.email === undefined) {
+    res.locals.email = undefined;
+  } else {
+    res.locals.email = req.session.email;
+  }
+  next();
+});
+
 
 //ログインの状態を毎回確認します
 /*
@@ -97,6 +134,7 @@ app.get('/login', (req, res) => {
   res.render('login.ejs',{ errors: []});
 });
 
+//ログイン画面のパスワードの整合性を確認する
 app.post('/login',(req,res) => {
   const email = req.body.email;
   const errors = [];
@@ -125,15 +163,102 @@ app.post('/login',(req,res) => {
   );
 });
 
+//会員情報登録画面に関するルーティング
+app.get('/register', (req, res) => {
+  res.render('register.ejs');
+});
+
+app.post('/register',(req,res,next) => {
+  const pass = req.body.newpassword; 
+  const passcheck = req.body.passwordcheck;   
+  const name = req.body.username;
+  const errors = [];    
+  if(pass === "") {
+    errors.push("パスワードが入力されていません。");    
+  }
+  if(pass !== passcheck) {
+    errors.push("確認用パスワードと一致しません");    
+  }
+  if(name === "") {
+    errors.push("ユーザー名が入力されていません。");        
+  }
+  if(errors.length > 0) {
+    res.render('register.ejs', { errors: errors });    
+  } else {
+    next();
+  }
+},
+(req,res) => {
+  const pass = req.body.newpassword; 
+  const name = req.body.username;
+  connection.query (
+    'INSERT INTO customers (name,email,password) VALUES (?, ?, ?)',
+    [name,req.session.email,pass],
+    (error,results) => {
+    req.session.username = name;
+    req.session.userId = results.insertId;
+    res.redirect('/'); 
+  });
+  }
+); 
+
 // パスワード忘れた画面に対応するルーティングです
 app.get('/password', (req, res) => {
   res.render('password.ejs');
 });
 
+//認証パスワード確認画面に対応するルーティング
+app.get('/passcord', (req, res) => {
+  res.render('passcord.ejs');
+});
+
+//認証パスワードの整合性を確認する
+app.post("/passcord", (req, res) => {
+    const errors = [];
+    let pass = req.body.passcord;
+    let emailpass = req.session.passcord;
+    if(pass == emailpass) {
+      res.render('register.ejs', { errors: errors });     
+    } else {
+      console.log("passcord is not correct");
+      console.log(emailpass);
+      console.log(pass);
+      errors.push("パスコードが正しくありません。");
+      res.render('passcord.ejs', { errors: errors });
+  };  
+});
+
 //新規登録画面に対応するルーティングです
-app.get("/signup", (req, res) => {
-  res.render("signup.ejs")
-});  
+app.get('/signup', (req, res) => {
+  const errors = [];
+  res.render('signup.ejs', { errors: errors });  
+});
+
+//新規登録のメールアドレス仮登録に対応
+app.post("/signup",(req,res) => {
+  console.log("check1");
+  const errors = [];
+  const email = req.body.signupemail;
+  const check = req.body.signupcheck;
+  console.log(email);
+  console.log(check);
+  if(check === undefined) {
+    console.log("error1");
+    errors.push("ストアの規約・プライバシーポリシーに同意していません。")
+    res.render('signup.ejs', { errors: errors });  
+  } else if(email === "") {
+    console.log("error1");
+    errors.push("メールアドレスを入力してください")
+    res.render('signup.ejs', { errors: errors });   
+  } else {
+    const number = Math.floor(Math.random() * (999999 + 1 - 100000)) + 100000;
+    req.session.passcord = number;
+    req.session.email = email;
+    console.log(req.session.passcord);
+    res.render('passcord.ejs',{ errors: errors });  
+    send(email,number);
+  }
+});
 
 //カート画面に対応するルーティングです
 app.get("/cart", (req, res) => {
