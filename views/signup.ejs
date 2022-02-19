@@ -37,21 +37,33 @@
             <h1>新規会員登録</h1>
             <p>会員登録をしていただくと、購入履歴が確認できるほか,</p>
             <p>次回のご注文から住所やお支払い方法の入力を省略することができます。</p>
-            <form>
-                <div class = "signup-label">
-                    <label class = "label-margin">メールアドレス</label>
-                    <input type = "text" class = "signup-mail" placeholder="Koasky@stores.jp" >
-                </div>
-            </form>
-            <form>
-                <div  class = "signup-policy">
-                    <label class = "label-margin"><a href="login.html">ストアの利用規約</a>・<a href="login.html">プライバシーポリシー</a>に同意する</label>
-                    <input type = "checkbox">
-                </div>
-            </form>
-            <button type = "button" class = signup-button>
-            送信する
-            </button><br>
+            <ul>
+                <li>
+                    <% if (errors.length > 0) { %>
+                        <ul class="errors2">
+                            <p><%= errors %></p>
+                        </ul>
+                    <% } %>
+                </li>
+                <form action = "/signup" method = "post">
+                    <li>
+                        <div class = "signup-label">
+                            <label class = "label-margin">メールアドレス</label>
+                            <input type = "text" class = "signup-mail" placeholder="Koasky@stores.jp" name = "signupemail">
+                        </div>
+                    </li>
+                    <li>
+                        <div  class = "signup-policy">
+                            <label class = "label-margin"><a href="login.html">ストアの利用規約</a>・<a href="login.html">プライバシーポリシー</a>に同意する</label>
+                            <input type = "checkbox" name = "signupcheck">
+                        </div>
+                    </li>
+                    <li>
+                        <input type = "submit" class = "signup-button" value="送信する">
+                    </li>
+                </form>
+            <ul>
+            <br>
             <div class = "signup-login">
                 <a href="/login">ログインの方はこちら</a>
             </div>      
