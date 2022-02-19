@@ -11,7 +11,7 @@ app.use(express.urlencoded({extended: false}));
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'k2yanagi',
+  password: '#Daichan3343',
   database: 'Koasuky'
 });
 
@@ -22,6 +22,15 @@ app.use(
       saveUninitialized: false,
     })
 );
+
+app.use((req, res, next) => {
+  if (req.session.userId === undefined) {
+    res.locals.username = undefined;
+  } else {
+    res.locals.username = req.session.username;
+  }
+  next();
+});
 
 //ログインの状態を毎回確認します
 /*
@@ -85,7 +94,35 @@ app.get('/about', (req, res) => {
 
 //ログイン画面に対応するルーティングです
 app.get('/login', (req, res) => {
-  res.render('login.ejs');
+  res.render('login.ejs',{ errors: []});
+});
+
+app.post('/login',(req,res) => {
+  const email = req.body.email;
+  const errors = [];
+  connection.query(
+    'SELECT * FROM customers WHERE email = ?',
+    [email],
+    (error,results) => {
+      console.log(email);
+      console.log(req.body.password);
+      if (results.length > 0) {
+        if (req.body.password === results[0].password){
+          req.session.userId = results[0].id;
+          req.session.username = results[0].name;
+          res.redirect('/');
+        } else {
+          console.log("error1");
+          errors.push("メールアドレスとパスワードが一致しません。")
+          res.render('login.ejs', { errors: errors });
+        }
+      } else {
+        console.log("error2");
+        errors.push("メールアドレスが存在しません。")
+        res.render('login.ejs', { errors: errors });
+      }
+    }
+  );
 });
 
 // パスワード忘れた画面に対応するルーティングです
