@@ -9,46 +9,42 @@
         <link rel="stylesheet" href="../css/responsive.css">
     </head>
     <body>
-        <header>
-            <div class="header-contents">
-                <div class="header-left">
-                    <div class="logo-btn">
-                        <a href="/"><img src="../../image/logo.png" class="logo"></a>
-                    </div>
-                    <ul>
-                        <li><a href="/">HOME</a></li>
-                        <li><a href="/about">ABOUT</a></li>
-                        <li><a href="https://www.instagram.com/daiki_yng/"><span class="fa fa-instagram"></span></a></li> 
-                    </ul>
-                </div>
-            </div>
-        </header>
+        <%- include("header"); %>
 
         <div class="login-wrapper">
             <h2 class="login-title">会員ログイン</h2>
-            <div class="msg-wrapper">
-                <ul>
-                    <li>
-                        <h3>メールアドレス</h3>
-                        <input type="text" name="" class="login-input">
-                    </li>
-                    <li class="login-password">
-                        <h3>パスワード　　</h3>
-                        <input type="text" name="" class="login-input">
-                    </li>
-                </ul>
-            </div>
+            <ul>
+                <% if (errors.length > 0) { %>
+                    <ul class="errors">
+                        <p><%= errors %></p>
+                    </ul>
+                  <% } %>
+                <form action = "/login" method = "post">
+                    <div class="msg-wrapper">
+                        <li>
+                            <h3>メールアドレス</h3>
+                            <input type="text" name="email" class="login-input">
+                        </li>
+                        <li class="login-password">
+                            <h3>パスワード</h3>
+                            <input type="text" name="password" class="login-input">
+                        </li>
+                    </div>
+                    <div class="btn-wrapper">
+                        <li>
+                            <input type="submit" class="login-btn2" value="ログイン">
+                        </li>
+                    </div>
+                </form>
+            </ul>
             <div class="btn-wrapper">
                 <ul>
-                    <li>
-                        <button type="submit" class="login-btn2">ログイン</button>
-                    </li>
-                    <li>
-                        <button class="facebook-btn">Facebookでログインする</button>
-                    </li>
-                </ul>
-
-                <ul class="btm-btn">
+                        <li>
+                            <button class="facebook-btn">Facebookでログインする</button>
+                        </li>
+                    </ul>
+                    
+                    <ul class="btm-btn">
                     <li>   
                         <a href="/signup">新規登録はこちら</a>
                     </li>
@@ -56,9 +52,9 @@
                         <a href="/password">パスワードを忘れた方はこちら</a>
                     </li>
                 </ul>
-            </div>
+                </div>
         </div>
-
+        
         <%- include("footer") %>
     </body>
 </html>
