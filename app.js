@@ -27,9 +27,8 @@ function send(text1,number) {
   const email = {
     from: 'daichan.server123@gmail.com', // 送信元メールアドレス
     to: text1, // 送信先メールアドレス
-    subject: 'Email Test Mail',
-    text: 'パスコード: ' + number,
-    html: 'パスコード: ' + number,
+    subject: 'Koasuky会員登録 認証コード',
+    html: 'パスコード: ' + number + '<br>このコードを認証コード欄に記入してください。',
     }
   const transport = nodemailer.createTransport(options);
   const result = transport.sendMail(email);
@@ -237,28 +236,41 @@ app.get('/signup', (req, res) => {
 //新規登録のメールアドレス仮登録に対応
 app.post("/signup",(req,res) => {
   console.log("check1");
+  var pattern = /^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@{1}[A-Za-z0-9_.-]+.[A-Za-z0-9]+$/;
   const errors = [];
   const email = req.body.signupemail;
   const check = req.body.signupcheck;
   console.log(email);
   console.log(check);
-  if(check === undefined) {
-    console.log("error1");
-    errors.push("ストアの規約・プライバシーポリシーに同意していません。")
-    res.render('signup.ejs', { errors: errors });  
-  } else if(email === "") {
-    console.log("error1");
-    errors.push("メールアドレスを入力してください")
-    res.render('signup.ejs', { errors: errors });   
-  } else {
-    const number = Math.floor(Math.random() * (999999 + 1 - 100000)) + 100000;
-    req.session.passcord = number;
-    req.session.email = email;
-    console.log(req.session.passcord);
-    res.render('passcord.ejs',{ errors: errors });  
-    send(email,number);
+  console.log(pattern.test(email));
+  connection.query (
+    'SELECT * FROM customers WHERE email = ?',
+    [email],
+    (error,results) => {
+      if(check === undefined) {
+        errors.push("ストアの規約・プライバシーポリシーに同意していません。")
+      } 
+      if(results.length > 0) {
+        errors.push("既に登録されているメールアドレスです"); 
+      } 
+      if(email === "") {
+        errors.push("メールアドレスを入力してください。")
+      } else if (pattern.test(email) === false) {
+        errors.push("正しいメールアドレスを入力してください。")        
+      }      
+      if(errors.length > 0) {  
+        res.render('signup.ejs', { errors: errors });  
+      } else {
+        const number = Math.floor(Math.random() * (999999 + 1 - 100000)) + 100000;
+        req.session.passcord = number;
+        req.session.email = email;
+        console.log(req.session.passcord);
+        res.render('passcord.ejs',{ errors: errors });  
+        send(email,number);
+      }
+    });
   }
-});
+);
 
 //カート画面に対応するルーティングです
 app.get("/cart", (req, res) => {
