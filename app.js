@@ -37,7 +37,7 @@ function send(text1,number) {
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: '#Daichan3343',
+  password: 'k2yanagi',
   database: 'Koasuky'
 });
 
@@ -111,7 +111,7 @@ app.get('/content/:id', (req, res) => {
 });
 
 //カートに入れるボタンを押したときに対応するルーティングです
-app.post("/add", (req, res) => {
+app.post("/add/:id", (req, res) => {
   const itemId = req.params.id;
   const userId = req.session.userId;
   connection.query(
@@ -119,7 +119,7 @@ app.post("/add", (req, res) => {
     [itemId, userId],
     (error, results) => {
       console.log("itemId: %d",itemId);
-      res.redirect("/content/:id");
+      res.redirect("back");
     });
 });
 
