@@ -41,7 +41,9 @@
                 <li>
                     <% if (errors.length > 0) { %>
                         <ul class="errors2">
-                            <p><%= errors %></p>
+                          <% errors.forEach(errors => { %>
+                            <li><%= errors %></li>
+                          <% }); %>
                         </ul>
                     <% } %>
                 </li>
