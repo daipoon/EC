@@ -168,14 +168,16 @@ app.get('/register', (req, res) => {
 });
 
 app.post('/register',(req,res,next) => {
+  var pattern = /^(?=.*[A-Z])[a-zA-Z0-9.?/-]{8,24}$/;
   const pass = req.body.newpassword; 
   const passcheck = req.body.passwordcheck;   
   const name = req.body.username;
   const errors = [];    
   if(pass === "") {
     errors.push("パスワードが入力されていません。");    
-  }
-  if(pass !== passcheck) {
+  } else if (pattern.test(pass) === false) {
+    errors.push("パスワードは8-24字で、大文字が少なくとも1つ含まれる必要があります"); 
+  } else if(pass !== passcheck) {
     errors.push("確認用パスワードと一致しません");    
   }
   if(name === "") {
