@@ -38,7 +38,7 @@ const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'k2yanagi',
-  database: 'Koasuky'
+  database: 'koasuky'
 });
 
 app.use(
@@ -67,18 +67,15 @@ app.use((req, res, next) => {
   next();
 });
 
-
 //ログインの状態を毎回確認します
-/*
 app.use((req, res, next) => {
-    if (req.session.userId === undefined)
+    if (req.session.userId === undefined){
             console.log('ログインしていません');
         } else {
             console.log('ログインしています');
         }
     next();
 });
-*/
 
 // トップ画面に対応するルーティングです
 app.get('/', (req, res) => {
@@ -115,10 +112,11 @@ app.post("/add/:id", (req, res) => {
   const itemId = req.params.id;
   const userId = req.session.userId;
   connection.query(
-    "INSERT INTO customers (cart) VALUES (?) WHERE id = ?", //お客のIDからcart情報を取得
+    "UPDATE customers SET cart = ? WHERE id = ?", //お客のIDからcart情報を取得
     [itemId, userId],
     (error, results) => {
-      console.log("itemId: %d",itemId);
+      console.log("itemId: %d\nuserId: %d",itemId, userId);
+      console.log(results);
       res.redirect("back");
     });
 });
@@ -252,7 +250,7 @@ app.post("/signup",(req,res) => {
       if(check === undefined) {
         errors.push("ストアの規約・プライバシーポリシーに同意していません。")
       } 
-      if(results.length > 0) {
+      if(results.length > 0) { // これemail全部と一個一個比較できてる？
         errors.push("既に登録されているメールアドレスです"); 
       } 
       if(email === "") {
@@ -276,15 +274,24 @@ app.post("/signup",(req,res) => {
 
 //カート画面に対応するルーティングです
 app.get("/cart", (req, res) => {
-  const userId = req.session.userId;
-  connection.query(
-    'SELECT cart FROM customers WHERE id = ?',
-    [userId],
-    (error, results) => {
-      res.render('cart.ejs', { carts: results });
-    }
-  );
-}); 
+    const userId = req.session.userId;
+    connection.query(
+      'SELECT cart FROM customers WHERE id = ?',
+      [userId],
+      (error, results_cart) => {
+        results_cart.forEach(function(itemId_){
+            const itemId = itemId_.cart;
+            console.log("itemId: %d", itemId);
+            connection.query(
+              'SELECT * FROM clothes WHERE id = ?',
+              [itemId],
+              (error, results_item) => {
+                console.log(results_item);
+                res.render('cart.ejs', { carts: results_item });
+            });
+        });
+    });
+});
 
 app.post("/purchase", (req, res) => {
   const userId = req.session.userId;
@@ -336,3 +343,4 @@ app.post("/contact_submit", (req, res) => {
 });
 
 app.listen(3000);
+// http://localhost:3000/

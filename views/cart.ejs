@@ -18,27 +18,22 @@
             </ul>
             <div class="cart-main-wrapper">
                 <ul class="incart-items">
+                    <% carts.forEach((cart) => {%>
                     <li>
                         <img src="" width="" height="">
-                        <p></p>
-                        <p></p>
-                        <p></p>
-                        <p></p>
+                        <p><%= cart.name %></p>
+                        <p><%= cart.price %></p>
+                        <!-- 個数を入れたい -->
+                        <p><%= cart.id %></p> 
                     </li>
-                    <li>
-                        <img src="" width="" height="">
-                        <p></p>
-                        <p></p>
-                        <p></p>
-                        <p></p>
-                    </li>
+                    <% }) %>
                 </ul>
-                合計　￥6000
+                合計　￥<%= carts.price %>
             </div>
             <div class="cart-bottom-wrapper">
                 <ul class="parchase-btns">
-                    <li><a href="purchased.html">購入する</a></li>
-                    <li><a href="index.html">ショッピングに戻る</a></li>
+                    <li><a href="/purchased">購入する</a></li>
+                    <li><a href="/">ショッピングに戻る</a></li>
                 </ul>
             </div>
         </div>
