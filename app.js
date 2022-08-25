@@ -19,7 +19,7 @@ const options = {
   },
   auth: { // 認証情報
     user: 'daichan.server123@gmail.com', // ユーザー名
-    pass: 'Daichanserver', // パスワード
+    pass: 'pntkzrdjulnukzhu', // パスワード
   },
 };
 
@@ -82,16 +82,83 @@ app.get('/', (req, res) => {
   connection.query(
     'SELECT id, name, price, category, purchased_count, released_at FROM clothes ORDER BY released_at DESC', //発売日が最近のものからsize以外の情報を取得
     (error_i, results_i) => {
-      console.log(results_i);
+      // console.log(results_i);
       //res.render('index.ejs', {items: results}); //items配列に商品情報がすべて格納（idの低い順)
   
     connection.query(
       "SELECT id, name, price, category, purchased_count, released_at FROM clothes ORDER BY id DESC LIMIT 3", //purchased_countの多いものから3つの情報を取得
       (error_r, results_r) => {
-        console.log(results_r);
-        res.render("index.ejs", {items: results_i, ranks: results_r}); //ranks配列にpurchased_countの多いものから3つの情報を格納（purchased_countの大きい順）
+        // console.log(results_r);
+        res.render("index.ejs", {items: results_i, ranks: results_r, search_word: undefined}); //ranks配列にpurchased_countの多いものから3つの情報を格納（purchased_countの大きい順）
       });
   });
+});
+
+// トップ画面に対応するルーティングです
+app.post('/', (req, res) => {
+  const check_Tshirt = req.body.cb_T_shirt;
+  const check_Tshirtlong = req.body.cb_T_shirt_long;
+  const check_sweat = req.body.cb_sweat;
+  const check_sweatshirt = req.body.cb_sweat_shirt;
+  const check_cap = req.body.cb_cap;
+  
+  const search_word = req.body.search_word;
+  console.log(search_word);
+
+  let check_count = 0
+  let category_list = []
+  // console.log(check_Tshirt)
+
+  if(check_Tshirt !== undefined){
+    check_count++;
+    category_list.push("T-shirt");
+  }
+  if(check_Tshirtlong !== undefined){
+    check_count++;
+    category_list.push("T-shirt-long");
+  }
+  if(check_sweat !== undefined){
+    check_count++;
+    category_list.push("sweat");
+  }
+  if(check_sweatshirt !== undefined){
+    check_count++;
+    category_list.push("sweat-shirt");
+  }
+  if(check_cap !== undefined){
+    check_count++;
+    category_list.push("cap");
+  }
+  console.log(check_count);
+  console.log(category_list);
+
+  if(check_count > 0){
+    let item_list = []
+    for (let i=0; i<check_count; i++){
+      // console.log(i);
+      // console.log(category_list[i]);
+      connection.query(
+        'SELECT id, name, price, category, purchased_count, released_at FROM clothes where category=? ORDER BY released_at DESC', //発売日が最近のものからsize以外の情報を取得
+        [category_list[i]],
+        (error, results) => {
+          // console.log(results);
+          item_list.push(results);
+          if(i === check_count-1){
+            item_list = [].concat.apply([], item_list)
+            console.log(item_list);
+            res.render("index.ejs", {items: item_list, ranks: null, search_word: search_word});
+          }
+      });
+    }
+  }
+  else if(check_count === 0){
+    connection.query(
+      "SELECT id, name, price, category, purchased_count, released_at FROM clothes ORDER BY id DESC LIMIT 3", //purchased_countの多いものから3つの情報を取得
+      (error, results) => {
+        // console.log(results);
+        res.render("index.ejs", {items: null, ranks: results, search_word: search_word}); //ranks配列にpurchased_countの多いものから3つの情報を格納（purchased_countの大きい順）
+    });
+  }
 });
 
 
@@ -112,14 +179,98 @@ app.post("/add/:id", (req, res) => {
   const itemId = req.params.id;
   const userId = req.session.userId;
   connection.query(
-    "UPDATE customers SET cart = ? WHERE id = ?", //お客のIDからcart情報を取得
-    [itemId, userId],
-    (error, results) => {
-      console.log("itemId: %d\nuserId: %d",itemId, userId);
-      console.log(results);
+    "SELECT cart1, cart2, cart3, cart4, cart5 FROM customers WHERE id = ?",
+    [userId],
+    (error, results_carts) => {
+      const carts = results_carts[0];
+      console.log(carts);
+      for (let cart in carts){
+        if(carts[cart] == null){
+          connection.query(
+            `UPDATE customers SET ${cart} = ? WHERE id = ?`, //お客のIDからcart情報を取得
+            [itemId, userId],
+            (error, results) => {
+              console.log("itemId: %d\nuserId: %d",itemId, userId);
+              console.log(results);
+              res.redirect("back");
+            });
+            break;
+          }
+        }
+    });
+});
+
+//カート画面に対応するルーティングです
+app.get("/cart", (req, res) => {
+  const userId = req.session.userId;
+  let results_item_list = [];
+  connection.query(
+    'SELECT cart1, cart2, cart3, cart4, cart5 FROM customers WHERE id = ?',
+    [userId],
+    (error, results_cart) => {
+      for (let cart in results_cart[0]){
+        let itemId = results_cart[0][cart];
+        connection.query(
+          'SELECT * FROM clothes WHERE id = ?',
+          [itemId],
+          (error, results_item) => {
+            // console.log(results_item[0]);
+            results_item_list.push(results_item[0]);
+            if(cart == "cart5") res.render('cart.ejs', { carts_list: results_item_list });
+        });
+      }
+    });
+});
+
+//カートから削除ボタンを押したときに対応するルーティングです
+app.post("/delete_item/:id", (req, res) => {
+  const cartId = req.params.id;
+  const userId = req.session.userId;
+  connection.query(
+    `UPDATE customers SET cart${cartId} = null WHERE id = ?`,
+    [userId],
+    (error, results_carts) => {
       res.redirect("back");
     });
 });
+
+app.post("/purchase", (req, res) => {
+    const userId = req.session.userId;
+    connection.query(
+      "UPDATE customers SET cart1=null, cart2=null, cart3=null, cart4=null, cart5=null WHERE id = ?",
+        [userId],
+        (error, results) => {
+          res.redirect("/purchased");
+    });
+});
+
+// app.post("/purchase", (req, res) => {
+//     const userId = req.session.userId;
+//     const purchase_counts = req.body.purchase_count; //今回お客が買う商品のそれぞれの個数(配列にする)
+//     var counter = 0; //何回繰り返しているか数える用
+//     purchase_counts.forEach((count) => {
+//         counter++;
+//         connection.query(
+//           "UPDATE clothes SET purchased_count = purchased_count + ? WHERE id = ( SELECT cart FROM customers WHERE id = ?)",
+//           // 上のSQLでは、データベースclothesのpurchased_countの値をお客が買った分だけ増やす（未完成）
+//           [count, userId],
+//           (error_p, results_p) => {
+//             if(counter == purchase_counts.length){ //最後の繰り返しなら、cartの中身を空（NULL）にしてHOMEに戻る
+//               connection.query(
+//                 "UPDATE customers SET cart = NULL WHERE id = ?"
+//                 [userId],
+//                 (error_c, results_c) => {
+//                   res.redirect("/purchased");
+//               });
+//             }
+//         });
+//     });
+// });
+
+//購入完了画面に対応するルーティングです
+app.get("/purchased", (req, res) => {
+res.render("purchased.ejs");
+}); 
 
 // アバウト画面に対応するルーティングです
 app.get('/about', (req, res) => {
@@ -271,55 +422,6 @@ app.post("/signup",(req,res) => {
     });
   }
 );
-
-//カート画面に対応するルーティングです
-app.get("/cart", (req, res) => {
-    const userId = req.session.userId;
-    connection.query(
-      'SELECT cart FROM customers WHERE id = ?',
-      [userId],
-      (error, results_cart) => {
-        results_cart.forEach(function(itemId_){
-            const itemId = itemId_.cart;
-            console.log("itemId: %d", itemId);
-            connection.query(
-              'SELECT * FROM clothes WHERE id = ?',
-              [itemId],
-              (error, results_item) => {
-                console.log(results_item);
-                res.render('cart.ejs', { carts: results_item });
-            });
-        });
-    });
-});
-
-app.post("/purchase", (req, res) => {
-  const userId = req.session.userId;
-  const purchase_counts = req.body.purchase_count; //今回お客が買う商品のそれぞれの個数(配列にする)
-  var counter = 0; //何回繰り返しているか数える用
-  purchase_counts.forEach((count) => {
-    counter++;
-    connection.query(
-      "UPDATE clothes SET purchased_count = purchased_count + ? WHERE id = ( SELECT cart FROM customers WHERE id = ?)",
-      // 上のSQLでは、データベースclothesのpurchased_countの値をお客が買った分だけ増やす（未完成）
-      [count, userId],
-      (error_p, results_p) => {
-        if(counter == purchase_counts.length){ //最後の繰り返しなら、cartの中身を空（NULL）にしてHOMEに戻る
-        connection.query(
-          "UPDATE customers SET cart = NULL WHERE id = ?"
-          [userId],
-          (error_c, results_c) => {
-            res.redirect("/purchased");
-          });
-        }
-      });
-  });
-});
-
-//購入完了画面に対応するルーティングです
-app.get("/purchased", (req, res) => {
-  res.render("purchased.ejs");
-}); 
 
 // 問い合わせ画面に対応するルーティングです
 app.get('/contact', (req, res) => {
