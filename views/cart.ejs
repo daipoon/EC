@@ -18,21 +18,34 @@
             </ul>
             <div class="cart-main-wrapper">
                 <ul class="incart-items">
-                    <% carts.forEach((cart) => {%>
+                    <% let sum_price = 0, cart_num = 1; %>
+                    <% console.log(carts_list); %>
+                    <% carts_list.forEach((cart) => { %>
+                        <% if(cart !== undefined){ %>
                     <li>
-                        <img src="" width="" height="">
+                        <form action="/content/<%= cart.id %>">
+                            <a href="/content/<%= cart.id %> "><img src="image/<%= cart.id %>.png" width="100px"></a> 
+                        </form>
                         <p><%= cart.name %></p>
                         <p><%= cart.price %></p>
                         <!-- 個数を入れたい -->
                         <p><%= cart.id %></p> 
+                        <form action="/delete_item/<%= cart_num %>" method="post">
+                            <button type="submit" class="btn delete-item-btn">カートから削除</button>
+                        </form>
                     </li>
-                    <% }) %>
+                            <% sum_price += cart.price; %>
+                        <% } %>
+                        <% cart_num++; %>
+                    <% }); %>
                 </ul>
-                合計　￥<%= carts.price %>
+                合計　￥<%= sum_price %>
             </div>
             <div class="cart-bottom-wrapper">
                 <ul class="parchase-btns">
-                    <li><a href="/purchased">購入する</a></li>
+                    <form action="purchase" method="post">
+                        <button type="submit" class="btn delete-item-btn">購入する</button>
+                    </form>
                     <li><a href="/">ショッピングに戻る</a></li>
                 </ul>
             </div>
