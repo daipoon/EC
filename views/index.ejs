@@ -32,8 +32,7 @@
                         <li><a href="/login" class="btn login-btn">ログイン</a></li>
                         <li><a href="/signup" class="btn signup-btn">新規登録</a></li>
                         <form action="/" method=post>
-                            <li><input type="submit" value="検索"></li>
-                            <li><input type="text" name="search_word" placeholder="検索ワードを入力" ></li>
+                            
                         </form>
                         <li><a href="/contact" class="btn contact-btn">お問い合わせ</a></li>
                     </ul>
@@ -70,7 +69,8 @@
                         <label for="cb-cap">cap</label>
                     </li>
 
-                    <li><button type="submit">決定</button></li>
+                    <li><input type="text" name="search_word" placeholder="検索ワードを入力" ></li>
+                    <li><input type="submit" value="決定"></li>
                 </form>
             </ul>
         </div>
@@ -123,7 +123,9 @@
                     <h1>ITEM</h1>
                     <ul class="item-list">
                         <% items.forEach((item) => { %>
-                            <% if(item.name.indexOf(search_word) > -1 || search_word === null){ %>
+                            <% console.log(item.name.indexOf(search_word)); %>
+                            <% console.log(search_word); %>
+                            <% if(item.name.indexOf(search_word) > -1 || search_word === undefined){ %>
                                 <li class="item">
                                     <form action="/content/<%= item.id %>">
                                         <a href="/content/<%= item.id %> "><img src="image/<%= item.id %>.png" width="200px"></a> 
