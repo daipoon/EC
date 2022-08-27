@@ -9,6 +9,25 @@ const nodemailer = require('nodemailer');
 app.use(express.static('public'));
 app.use(express.urlencoded({extended: false}));
 
+var Twitter = require('twitter');
+
+var client = new Twitter({
+  consumer_key: 'iyGYWq5ohbRk11111111111',
+  consumer_secret: '6FV5MOxbwbRkYew111111111111111111111111111111111',
+  access_token_key: '982942500309483521-111111111111111111111111111111111',
+  access_token_secret: 'r1CQ4gIqR59U2Qa111111111111111111111111111111111'
+});
+
+function tweetPost(content) {
+  client.post('statuses/update', {status: content}, function(error, tweet, response) {
+    if (!error) {
+      console.log("tweet success: " + content);
+    } else {
+      console.log(error);
+    }
+  });
+}
+
 const options = {
   host: 'smtp.gmail.com', // メールサーバー
   port: 465, // ポート番号 25 など
@@ -37,8 +56,8 @@ function send(text1,number) {
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'k2yanagi',
-  database: 'koasuky'
+  password: 'daichanSQL',
+  database: 'koasky'
 });
 
 app.use(
