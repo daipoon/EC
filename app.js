@@ -312,7 +312,7 @@ app.post('/login',(req,res) => {
       console.log(email);
       console.log(req.body.password);
       if (results.length > 0) {
-        if (req.body.password === results[0].password){
+        if (bcrypt.compareSync(req.body.password, results[0].password) == true){
           req.session.userId = results[0].id;
           req.session.username = results[0].name;
           res.redirect('/');
@@ -360,9 +360,11 @@ app.post('/register',(req,res,next) => {
 (req,res) => {
   const pass = req.body.newpassword; 
   const name = req.body.username;
+  let hashed_password = bcrypt.hashSync(pass, 10);
+  console.log(hashed_password);
   connection.query (
     'INSERT INTO customers (name,email,password) VALUES (?, ?, ?)',
-    [name,req.session.email,pass],
+    [name,req.session.email,hashed_password],
     (error,results) => {
     req.session.username = name;
     req.session.userId = results.insertId;
@@ -455,7 +457,7 @@ app.post("/contact_submit", (req, res) => {
   const contents = req.body.contents;
 
   connection.query(
-    "INSERT INTO contacts (name, email, title contents) VALUES (?, ?, ?, ?)",
+    "INSERT INTO contacts (name, email, title, contents) VALUES (?, ?, ?, ?)",
     [name, email, title, contents],
     (error, results) => {
       res.redirect("/");
