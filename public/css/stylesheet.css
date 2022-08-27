@@ -3,6 +3,88 @@ a{
     text-decoration: none;
 }
 
+/* change */
+
+.category-checkbox{
+    margin: 0 auto;
+}
+
+.category{
+    width: 300px;
+    padding: 10px 20px;
+}
+
+.category-checkbox-parent{
+    background-color: white;
+    cursor: pointer;
+}
+
+.category-checkbox-parent::before {
+    content: '▼';
+    display: inline-block;
+    transform: rotate(-90deg);
+    transition: .4s;
+}
+
+.category-checkbox-parent.active::before {
+    transform: rotate(0deg);
+}
+
+.category-checkbox-child {
+    background-color: darkgrey;
+    color: white;
+    /* height: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.8s; /
+}
+
+.category-checkbox-child.active {
+    height: 17px;
+    / opacity: 1;
+    visibility: visible; */
+}
+
+.category-checkbox {
+    padding-left: 10px;
+}
+
+.header-left {
+    padding-left: 10px;
+}
+
+.logo{
+    text-align: center;
+}
+
+footer{
+    background-color:rgb(235, 235, 235);
+}
+
+header{
+    margin: 0;
+    background-color:rgb(235, 235, 235);
+    width: 100%;
+    height: 92px;
+}
+
+
+
+h1.ranking-item{
+    margin: auto;
+}
+
+img.logo{
+    margin: auto;
+}
+
+/* End */
+
+header a, footer a{
+    color: black;
+    font-size: 16px;
+}
+
 li{
     list-style: none;
 }
@@ -12,14 +94,18 @@ ul{
     margin: 0px;
 }
 
-header{
-    width: 100%;
-    height: 92px;
+body{
+    margin: 0px;
 }
 
-header a, footer a{
-    color: black;
-    font-size: 16px;
+
+p.login-name{
+    margin: 0px;
+    background-color:rgb(235, 235, 235);
+}
+
+.btn login-btn {
+    background-color: #999;
 }
 
 .logo{
@@ -29,21 +115,6 @@ header a, footer a{
 .logo-btn{
     float: left;
     height: 92px;
-}
-
-.login-btn{
-    color: white;
-    background-color: black;
-}
-
-.signup-btn{
-    color: white;
-    background-color: black;
-}
-
-.cart-btn{
-    color: white;
-    background-color: black;
 }
 
 .header-contents{
