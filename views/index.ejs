@@ -9,68 +9,40 @@
         <link rel="stylesheet" href="css/responsive.css">
     </head>
     <body>
-        <header>
-            <div class="header-contents">
-                <div class="header-left">
-                    <div class="logo-btn">
-                        <a href="/"><img src="image/logo.png" class="logo"></a>
-                    </div>
-                    <ul>
-                        <li><a href="/">HOME</a></li>
-                        <li><a href="/about">ABOUT</a></li>
-                        <li><a href="https://www.instagram.com/daiki_yng/"><span class="fa fa-instagram"></span></a></li>
-                        <% if(locals.username !== undefined) { %>
-                        <p class = "login-name">ログイン中 : <%= locals.username %></p>
-                        <% } else { %>
-                        <p class = "login-name">ゲストとしてログイン中</p>
-                        <% } %>
-                    </ul>
-                </div>
-                <div class="header-right">
-                    <ul>
-                        <li><a href="/cart" class="cart-btn"><span class="fa fa-shopping-cart"></span></a></li>
-                        <li><a href="/login" class="btn login-btn">ログイン</a></li>
-                        <li><a href="/signup" class="btn signup-btn">新規登録</a></li>
-                        <form action="/" method=post>
-                            
-                        </form>
-                        <li><a href="/contact" class="btn contact-btn">お問い合わせ</a></li>
-                    </ul>
-                </div>
-            </div>
-        </header>
+        <%- include("header"); %>    
         <div class="category-checkbox">
             <ul>
                 <li class="category category-checkbox-parent">クリックでメニューが開きます</li>
-
+                
                 <form action="/" method="post">
                     <li class="category category-checkbox-child">
                         <input type="checkbox" name="cb_T_shirt">
                         <label for="cb-T-shirt">T-shirt</label>
                     </li>
-
+                    
                     <li class="category category-checkbox-child">
                         <input type="checkbox" name="cb_T_shirt_long">
                         <label for="cb-T-shirt-long">T-shirt-long</label>
                     </li>
-
+                    
                     <li class="category category-checkbox-child">
                         <input type="checkbox" name="cb_sweat">
                         <label for="cb-sweat">sweat</label>
                     </li>
-
+                    
                     <li class="category category-checkbox-child">
                         <input type="checkbox" name="cb_sweat_shirt">
                         <label for="cb-sweat-shirt">sweat-shirt</label>
                     </li>
-
+                    
                     <li class="category category-checkbox-child">
                         <input type="checkbox" name="cb_cap">
                         <label for="cb-cap">cap</label>
                     </li>
-
+                    
                     <li><input type="text" name="search_word" placeholder="検索ワードを入力" ></li>
                     <li><input type="submit" value="決定"></li>
+                    <div class = "logo"><a href="/"><img src="image/logo.png" class="logo"></a></div>
                 </form>
             </ul>
         </div>
@@ -94,7 +66,6 @@
             {
                 const MenuP = document.querySelector('.category-checkbox-parent');
                 const MenuC = document.querySelector('.category-checkbox-child');
-
                     MenuP.addEventListener('click', () => {
                     MenuC.classList.toggle('active');
                     MenuP.classList.toggle('active');
@@ -145,7 +116,6 @@
         <script>
             let search = document.querySelector(`input[name='search']`);
             let submit = document.querySelector(`input[name='submit']`);
-
             submit.addEventListener('click', () => {
 	                document.querySelector(`#output3`).innerHTML = search.value;
             }); 
