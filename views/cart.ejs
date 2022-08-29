@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Kōasuky</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="../css/stylesheet.css">
+        <link rel="stylesheet" href="../css/responsive.css">
+    </head>
+    <body>
+        <div class="cart-contener">
+            <h1>カートに入っているアイテム</h1>
+            <ul>
+                <li><h3>アイテム名</h3></li>
+                <li><h3>価格</h3></li>
+                <li><h3>個数</h3></li>
+            </ul>
+            <div class="cart-main-wrapper">
+                <ul class="incart-items">
+                    <% let sum_price = 0, cart_num = 1; %>
+                    <% console.log(carts_list); %>
+                    <% carts_list.forEach((cart) => { %>
+                        <% if(cart !== undefined){ %>
+                    <li>
+                        <form action="/content/<%= cart.id %>">
+                            <a href="/content/<%= cart.id %> "><img src="image/<%= cart.id %>.png" width="100px"></a> 
+                        </form>
+                        <p><%= cart.name %></p>
+                        <p><%= cart.price %></p>
+                        <!-- 個数を入れたい -->
+                        <p><%= cart.id %></p> 
+                        <form action="/delete_item/<%= cart_num %>" method="post">
+                            <button type="submit" class="btn delete-item-btn">カートから削除</button>
+                        </form>
+                    </li>
+                            <% sum_price += cart.price; %>
+                        <% } %>
+                        <% cart_num++; %>
+                    <% }); %>
+                </ul>
+                合計　￥<%= sum_price %>
+            </div>
+            <div class="cart-bottom-wrapper">
+                <ul class="parchase-btns">
+                    <form action="purchase" method="post">
+                        <button type="submit" class="btn delete-item-btn">購入する</button>
+                    </form>
+                    <li><a href="/">ショッピングに戻る</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <%- include("footer") %>
+    </body>
+</html>

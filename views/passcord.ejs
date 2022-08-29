@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Kōasuky</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="../css/stylesheet.css">
+        <link rel="stylesheet" href="../css/responsive.css">
+    </head>
+    <body>
+        <%- include("header"); %>   
+        <div class = "signup-logo">
+            <a href="/"><img src="../../image/logo.png" width = "600"></a>
+        </div>
+        <div class = "step-check">
+            <ul>
+                <li></li>
+            </ul>
+        </div>
+        <div class = "new-signup">
+            <h1>パスコード認証</h1>
+            <p>登録したメールアドレスに送信されたパスコードを</p>
+            <p>以下の欄にご記入ください。</p>
+            <ul>
+                <li>
+                    <% if (errors.length > 0) { %>
+                        <ul class="errors2">
+                            <p><%= errors %></p>
+                        </ul>
+                    <% } %>
+                </li>
+                <form action = "/passcord" method = "post">
+                    <li>
+                        <div class = "signup-label">
+                            <label class = "label-margin">認証コード</label>
+                            <input type = "text" class = "signup-mail" name = "passcord">
+                        </div>
+                    </li>
+                    <li>
+                        <input type = "submit" class = "passcord-button" value="送信する">
+                    </li>
+                </form>
+            <ul>
+            <br>
+            <div class = "signup-login">
+                <a href="/signup">メールが送られてこない方はこちら</a>
+            </div>      
+        </div>
+        <%- include("footer") %>
+    </body>
+    </html>

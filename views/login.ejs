@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Kōasuky</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="../css/stylesheet.css">
+        <link rel="stylesheet" href="../css/responsive.css">
+    </head>
+    <body>
+        <%- include("header"); %>
+
+        <div class="login-wrapper">
+            <h2 class="login-title">会員ログイン</h2>
+            <ul>
+                <% if (errors.length > 0) { %>
+                    <ul class="errors">
+                        <p><%= errors %></p>
+                    </ul>
+                  <% } %>
+                <form action = "/login" method = "post">
+                    <div class="msg-wrapper">
+                        <li>
+                            <h3>メールアドレス</h3>
+                            <input type="text" name="email" class="login-input">
+                        </li>
+                        <li class="login-password">
+                            <h3>パスワード</h3>
+                            <input type="text" name="password" class="login-input">
+                        </li>
+                    </div>
+                    <div class="btn-wrapper">
+                        <li>
+                            <input type="submit" class="login-btn2" value="ログイン">
+                        </li>
+                    </div>
+                </form>
+            </ul>
+            <div class="btn-wrapper">
+                <ul>
+                        <li>
+                            <button class="facebook-btn">Facebookでログインする</button>
+                        </li>
+                    </ul>
+                    
+                    <ul class="btm-btn">
+                    <li>   
+                        <a href="/signup">新規登録はこちら</a>
+                    </li>
+                    <li>
+                        <a href="/password">パスワードを忘れた方はこちら</a>
+                    </li>
+                </ul>
+                </div>
+        </div>
+        
+        <%- include("footer") %>
+    </body>
+</html>

@@ -1,0 +1,29 @@
+<header>
+    <div class="header-contents">
+        <div class="header-left">
+            <ul>
+                <li><a href="/">HOME</a></li>
+                <li><a href="/about">ABOUT</a></li>
+                <li><a href="https://www.instagram.com/daiki_yng/"><span class="fa fa-instagram"></span></a></li>
+                <% if(locals.username !== undefined) { %>
+                <li><p class = "login-name">ログイン中 : <%= locals.username %></p></li>
+                <% } else { %>
+                    <li><p class = "login-name">ゲストとしてログイン中</p></li>
+                <% } %>
+            </ul>
+        </div>
+        <div class="logo-btn">
+        </div>
+        <div class="header-right">
+            <ul>
+                <li><a href="/cart" class="cart-btn"><span class="fa fa-shopping-cart"></span></a></li>
+                <li><a href="/login" class="btn login-btn">ログイン</a></li>
+                <li><a href="/signup" class="btn signup-btn">新規登録</a></li>
+                <form action="/" method=post>
+                    
+                </form>
+                <li><a href="/contact" class="btn contact-btn">お問い合わせ</a></li>
+            </ul>
+        </div>
+    </div>
+</header>

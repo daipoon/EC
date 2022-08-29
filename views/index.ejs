@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Kōasuky</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/stylesheet.css">
+        <link rel="stylesheet" href="css/responsive.css">
+    </head>
+    <body>
+        <%- include("header"); %>    
+        <div class="category-checkbox">
+            <ul>
+                <li class="category category-checkbox-parent">クリックでメニューが開きます</li>
+                
+                <form action="/" method="post">
+                    <li class="category category-checkbox-child">
+                        <input type="checkbox" name="cb_T_shirt">
+                        <label for="cb-T-shirt">T-shirt</label>
+                    </li>
+                    
+                    <li class="category category-checkbox-child">
+                        <input type="checkbox" name="cb_T_shirt_long">
+                        <label for="cb-T-shirt-long">T-shirt-long</label>
+                    </li>
+                    
+                    <li class="category category-checkbox-child">
+                        <input type="checkbox" name="cb_sweat">
+                        <label for="cb-sweat">sweat</label>
+                    </li>
+                    
+                    <li class="category category-checkbox-child">
+                        <input type="checkbox" name="cb_sweat_shirt">
+                        <label for="cb-sweat-shirt">sweat-shirt</label>
+                    </li>
+                    
+                    <li class="category category-checkbox-child">
+                        <input type="checkbox" name="cb_cap">
+                        <label for="cb-cap">cap</label>
+                    </li>
+                    
+                    <li><input type="text" name="search_word" placeholder="検索ワードを入力" ></li>
+                    <li><input type="submit" value="決定"></li>
+                    <div class = "logo"><a href="/"><img src="image/logo.png" class="logo"></a></div>
+                </form>
+            </ul>
+        </div>
+        <script>
+            // {
+            //     const displayNone = document.querySelector('.category-checkbox-child');
+            //     const dis_none_bt = document.querySelector('.category-checkbox-parent');
+                
+            //     dis_none_bt.addEventListener('click' ,  () => {
+            //     if(displayNone.classList.contains('active')){
+            //         displayNone.style.display = 'none';
+            //         displayNone.classList.remove('active');
+            //     }
+            //     else {
+            //         displayNone.style.display = 'inline-block';
+            //         displayNone.classList.add('active');
+            //     }
+            //     });
+    
+            // }
+            {
+                const MenuP = document.querySelector('.category-checkbox-parent');
+                const MenuC = document.querySelector('.category-checkbox-child');
+                    MenuP.addEventListener('click', () => {
+                    MenuC.classList.toggle('active');
+                    MenuP.classList.toggle('active');
+                });
+            }
+        </script>
+        <div class="top-wrapper">
+            <% if(ranks !== null){ %>
+                <div class="ranking-item">
+                    <h1>RANKING</h1>
+                    <ul class="ranking-list">
+                        <% ranks.forEach((rank) => { %>
+                            <li>
+                                <form action="/content/<%= rank.id %>">
+                                    <a href="/content/<%= rank.id %> "><img src="image/<%= rank.id %>.png" width="200px"></a> 
+                                </form>
+                                <p><%= rank.name %></p>
+                                <p>￥<%= rank.price %></p>
+                            </li>
+                        <% }); %>
+                    </ul>
+                </div>
+            <% } %>
+            <% if(items !== null){ %>
+                <div class="main-item">
+                    <h1>ITEM</h1>
+                    <ul class="item-list">
+                        <% items.forEach((item) => { %>
+                            <% console.log(item.name.indexOf(search_word)); %>
+                            <% console.log(search_word); %>
+                            <% if(item.name.indexOf(search_word) > -1 || search_word === undefined){ %>
+                                <li class="item">
+                                    <form action="/content/<%= item.id %>">
+                                        <a href="/content/<%= item.id %> "><img src="image/<%= item.id %>.png" width="200px"></a> 
+                                    </form>
+                                    <p><%= item.name %></p>
+                                    <p>￥<%= item.price %></p>
+                                </li>
+                            <% } %>
+                        <% }); %>
+                    </ul>
+                </div>
+            <% } %>
+        </div>
+
+        <%- include("footer") %>
+
+        <script>
+            let search = document.querySelector(`input[name='search']`);
+            let submit = document.querySelector(`input[name='submit']`);
+            submit.addEventListener('click', () => {
+	                document.querySelector(`#output3`).innerHTML = search.value;
+            }); 
+        </script>
+    </body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Kōasuky</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="../css/stylesheet.css">
+        <link rel="stylesheet" href="../css/responsive.css">
+    </head>
+    <body>
+        <%- include("header"); %>   
+        <div class = "signup-logo">
+            <a href="/"><img src="../../image/logo.png" width = "600"></a>
+        </div>
+        <div class = "step-check">
+            <ul>
+                <li></li>
+            </ul>
+        </div>
+        <div class = "new-signup">
+            <h1>会員情報登録フォーム</h1>
+            <p>会員情報の登録を行います</p>
+            <p>情報を入力後、送信ボタンを押してください。</p>
+            <ul class = "register-form">
+                <li>
+                    <% if (errors.length > 0) { %>
+                        <ul class="errors2">
+                          <% errors.forEach(errors => { %>
+                            <li><%= errors %></li>
+                          <% }); %>
+                        </ul>
+                      <% } %>
+                </li>
+                <form action = "/register" method = "post">
+                    <li>
+                        <div class = "signup-label">
+                            <p>メールアドレス  <%= locals.email %></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class = "signup-label">
+                            <label class = "label-margin">パスワード</label>
+                            <input type = "text" class = "register-mail"  name = "newpassword">
+                        </div>
+                    </li>
+                    <li>
+                        <div class = "signup-label">
+                            <label class = "label-margin">パスワード確認用</label>
+                            <input type = "text" class = "register-mail"  name = "passwordcheck">
+                        </div>
+                    </li>
+                    <li>
+                        <div class = "signup-label">
+                            <label class = "label-margin">ユーザー名</label>
+                            <input type = "text" class = "register-mail" name = "username">
+                        </div>
+                    </li>
+                    <li>
+                        <input type = "submit" class = "register-button" value="送信する">
+                    </li>
+                <ul>
+            </form>
+        </div>
+        <%- include("footer") %>
+    </body>
+    </html>
