@@ -54,11 +54,30 @@ function send(text1,number) {
 };
 
 const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'daichanSQL',
-  database: 'koasky'
+  host: 'ec2-54-80-122-11.compute-1.amazonaws.com',
+  user: 'otpskzjylgahik',
+  password: '9eb16c3e1d046557079179b5ae0831b1e010f34b46c7de7714d92710b204be95',
+  database: 'dc18hj6lsh2akl'
 });
+
+// const { Client } = require('pg');
+
+// const connection = new Client({
+//   connectionString: process.env.DATABASE_URL,
+//   ssl: {
+//     rejectUnauthorized: false
+//   }
+// });
+
+// connection.connect();
+
+// connection.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
+//   if (err) throw err;
+//   for (let row of res.rows) {
+//     console.log(JSON.stringify(row));
+//   }
+//   connection.end();
+// });
 
 app.use(
     session({
